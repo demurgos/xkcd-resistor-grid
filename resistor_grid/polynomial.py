@@ -31,6 +31,18 @@ class Polynomial(object):
     def __str__(self):
         return str(self.coefficients)
 
+    def __add__(self, other):
+        return self.add(other)
+
+    def __sub__(self, other):
+        return self.sub(other)
+
+    def __neg__(self):
+        return self.neg()
+
+    def __mul__(self, other):
+        return self.mul(other)
+
     def deg(self):
         """
         Returns the degree of the polynomial.
