@@ -77,14 +77,14 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual("0", str(Polynomial([])))
-        self.assertEqual("1", str(Polynomial([1])))
-        self.assertEqual("-1", str(Polynomial([-1])))
-        self.assertEqual("x", str(Polynomial([0, 1])))
-        self.assertEqual("-x", str(Polynomial([0, -1])))
-        self.assertEqual("2x - 1", str(Polynomial([-1, 2])))
-        self.assertEqual("-2x + 1", str(Polynomial([1, -2])))
-        self.assertEqual("x^2 - 1", str(Polynomial([-1, 0, 1])))
+        self.assertEqual(u"P[0]", str(Polynomial([])))
+        self.assertEqual(u"P[1]", str(Polynomial([1])))
+        self.assertEqual(u"P[-1]", str(Polynomial([-1])))
+        self.assertEqual(u"P[x]", str(Polynomial([0, 1])))
+        self.assertEqual(u"P[-x]", str(Polynomial([0, -1])))
+        self.assertEqual(u"P[2x - 1]", str(Polynomial([-1, 2])))
+        self.assertEqual(u"P[-2x + 1]", str(Polynomial([1, -2])))
+        self.assertEqual(u"P[x^2 - 1]", str(Polynomial([-1, 0, 1])))
 
 
 if __name__ == '__main__':

@@ -34,7 +34,7 @@ class Polynomial(object):
         deg = self.deg()
 
         if deg < 0:
-            return "0"
+            return u"P[0]"
 
         monomials = []
         for i, coefficient in enumerate(self.coefficients):
@@ -55,7 +55,7 @@ class Polynomial(object):
 
                 monomials.append(sign + abs_value + unknown_pow)
 
-        return " ".join(reversed(monomials))
+        return u"P[" + u" ".join(reversed(monomials)) + u"]"
 
     def __add__(self, other):
         return self.add(other)

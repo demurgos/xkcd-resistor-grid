@@ -55,22 +55,36 @@ class Circuit(object):
 
         self.resistors[max(node1, node2)][min(node1, node2)] = value
 
-    def get_matrix(self, none_value=None):
+    def ensure_complete(self):
+        """
+        This method checks if all the values are known (not None).
+        It raises an exception otherwise
+        :return:
+        """
+
+        for i in range(self.size):
+            for j in range(i):
+                if self.resistors[i][j] == None:
+                    raise Exception("Missing resistor value between {} and {}".format(j, i))
+
+    def get_matrix(self, null_value=0, neutral_value=1):
         """
         Returns the matrix associated to the circuit.
         This matrix helps to reduce the circuit
         :return:
         """
+        self.ensure_complete()
+
         size = 1 + (self.size * (self.size - 1)) / 2
-        mat = [[none_value] * size for j in range(size)]
+        mat = [[null_value] * size for j in range(size)]
 
         # Kirchhoff's current law
         column = 0
         for i in range(self.size - 1):
             for j in range(self.size - 1 - i):
                 if i > 0:
-                    mat[i - 1][column] = -1
-                mat[i + j][column] = 1
+                    mat[i - 1][column] = -neutral_value
+                mat[i + j][column] = neutral_value
                 column += 1
 
         # Kirchhoff's voltage law
@@ -92,6 +106,6 @@ class Circuit(object):
 
         # Main resistor
         mat[size - 1][0] = self.get(0, 1)  # Resistor between nodes 0 and 1
-        mat[size - 1][size - 1] = 1
+        mat[size - 1][size - 1] = neutral_value
 
         return Matrix(mat)
