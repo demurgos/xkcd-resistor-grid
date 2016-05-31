@@ -1,7 +1,8 @@
+# -*- coding: utf8 -*-
+
 """
 This module provides utilities to handle matrices.
 """
-
 
 def clone_matrix(mat):
     """
@@ -20,7 +21,20 @@ class Matrix(object):
         self.coefficients = tuple(tuple(x for x in row) for row in coefficients)
 
     def __str__(self):
-        return str(self.coefficients)
+        return self.pretty_print()
+
+    def pretty_print(self, indent=8):
+        """
+        This returns a pretty printed version of the matrix
+        :return:
+        """
+        formatted_lines = []
+        for line in self.coefficients:
+            formatted_items = []
+            for item in line:
+                formatted_items.append(str(item).ljust(indent, " "))
+            formatted_lines.append(u"(" + ", ".join(formatted_items) + u")")
+        return u"(" + ",\n ".join(formatted_lines) + u")"
 
     def get_coefficient(self, line, column):
         """

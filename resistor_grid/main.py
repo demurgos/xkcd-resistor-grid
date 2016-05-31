@@ -4,23 +4,18 @@
 This is the main module. It computes the equivalent resistance of a resistor grid.
 """
 
-# a = b = tmp = 1
-# n = 0
-# while n < 10:
-#     print a
-#     a, b = b, a + b
-#     n += 1
+from resistor_grid.circuit import Circuit
 
+CIRCUIT = Circuit(5)
+CIRCUIT.set(0, 1, 101)
+CIRCUIT.set(0, 2, 102)
+CIRCUIT.set(0, 3, 103)
+CIRCUIT.set(0, 4, 104)
+CIRCUIT.set(1, 2, 112)
+CIRCUIT.set(1, 3, 113)
+CIRCUIT.set(1, 4, 114)
+CIRCUIT.set(2, 3, 123)
+CIRCUIT.set(2, 4, 124)
+CIRCUIT.set(3, 4, 134)
 
-def is_prime(number):
-    """Checks if the integer is a prime"""
-    for i in range(2, number):
-        if number % i == 0:
-            return False
-    return True
-
-PRIMES = [x for x in range(2, 20) if is_prime(x)]
-
-print PRIMES
-print is_prime(10)
-print is_prime(13)
+print CIRCUIT.get_matrix(0)

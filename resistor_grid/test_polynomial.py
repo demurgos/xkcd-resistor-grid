@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 """
 Unit-test for the Polynomial class
 """
