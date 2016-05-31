@@ -71,6 +71,21 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(Polynomial([2]).mul(Polynomial([3])).coefficients, (6,))
         self.assertEqual(Polynomial([1, 1]).mul(Polynomial([-1, 1])).coefficients, (-1, 0, 1))
 
+    def test_str(self):
+        """
+        Test the .__str__ method
+        :return:
+        """
+
+        self.assertEqual("0", str(Polynomial([])))
+        self.assertEqual("1", str(Polynomial([1])))
+        self.assertEqual("-1", str(Polynomial([-1])))
+        self.assertEqual("x", str(Polynomial([0, 1])))
+        self.assertEqual("-x", str(Polynomial([0, -1])))
+        self.assertEqual("2x - 1", str(Polynomial([-1, 2])))
+        self.assertEqual("-2x + 1", str(Polynomial([1, -2])))
+        self.assertEqual("x^2 - 1", str(Polynomial([-1, 0, 1])))
+
 
 if __name__ == '__main__':
     unittest.main()

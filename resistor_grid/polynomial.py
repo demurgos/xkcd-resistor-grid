@@ -31,7 +31,31 @@ class Polynomial(object):
         self.coefficients = tuple(normalize_coefficients(coefficients))
 
     def __str__(self):
-        return str(self.coefficients)
+        deg = self.deg()
+
+        if deg < 0:
+            return "0"
+
+        monomials = []
+        for i, coefficient in enumerate(self.coefficients):
+            if coefficient != 0:
+                if i != deg:
+                    sign = u"- " if coefficient < 0 else u"+ "
+                else:
+                    sign = u"-" if coefficient < 0 else u""
+
+                if i == 0:
+                    unknown_pow = u""
+                elif i == 1:
+                    unknown_pow = u"x"
+                else:
+                    unknown_pow = u"x^" + str(i)
+
+                abs_value = u"" if abs(coefficient) == 1 and i > 0 else str(abs(coefficient))
+
+                monomials.append(sign + abs_value + unknown_pow)
+
+        return " ".join(reversed(monomials))
 
     def __add__(self, other):
         return self.add(other)
