@@ -69,7 +69,7 @@ class Matrix(object):
         :return:
         """
         if not self.is_square():
-            raise Exception("Not a square matrix")
+            raise Exception(u"Not a square matrix")
 
         mat = clone_matrix(self.coefficients)
         size = self.get_size()[0]
@@ -112,7 +112,7 @@ class Matrix(object):
         :return:
         """
         if not self.is_square():
-            raise Exception("Not a square matrix")
+            raise Exception(u"Not a square matrix")
 
         mat = clone_matrix(self.coefficients)
         size = self.get_size()[0]
@@ -128,7 +128,7 @@ class Matrix(object):
                     best_line = line
                     best_value = cur_value
             if best_value == 0:
-                raise Exception("Singular matrix")
+                raise Exception(u"Singular matrix")
             permut[cur_line], permut[best_line] = permut[best_line], permut[cur_line]
             for idx in range(size):
                 mat[cur_line][idx], mat[best_line][idx] = mat[best_line][idx], mat[cur_line][idx]

@@ -127,7 +127,7 @@ class Polynomial(object):
         :return:
         """
         if other_polynomial.deg() < 0:
-            raise Exception("Dividing by null polynomial")
+            raise Exception(u"Dividing by null polynomial")
 
         remainder = list(self.coefficients)
         divisor = list(other_polynomial.coefficients)

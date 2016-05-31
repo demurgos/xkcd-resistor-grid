@@ -38,7 +38,7 @@ class Circuit(object):
         :return:
         """
         if node1 == node2:
-            raise Exception("Cannot get resistor for same node")
+            raise Exception(u"Cannot get resistor for same node")
 
         return self.resistors[max(node1, node2)][min(node1, node2)]
 
@@ -51,7 +51,7 @@ class Circuit(object):
         :return:
         """
         if node1 == node2:
-            raise Exception("Cannot set resistor for same node")
+            raise Exception(u"Cannot set resistor for same node")
 
         self.resistors[max(node1, node2)][min(node1, node2)] = value
 
@@ -65,7 +65,7 @@ class Circuit(object):
         for i in range(self.size):
             for j in range(i):
                 if self.resistors[i][j] is None:
-                    raise Exception("Missing resistor value between {} and {}".format(j, i))
+                    raise Exception(u"Missing resistor value between {} and {}".format(j, i))
 
     def get_matrix(self, null_value=0, neutral_value=1):
         """
