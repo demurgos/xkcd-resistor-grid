@@ -71,6 +71,15 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(Polynomial([2]).mul(Polynomial([3])).coefficients, (6,))
         self.assertEqual(Polynomial([1, 1]).mul(Polynomial([-1, 1])).coefficients, (-1, 0, 1))
 
+    def test_div(self):
+        """
+        Test the .div method
+        :return:
+        """
+
+        self.assertEqual((-1, 1), Polynomial([-1, 0, 1]).div(Polynomial([1, 1])).coefficients)
+
+
     def test_str(self):
         """
         Test the .__str__ method

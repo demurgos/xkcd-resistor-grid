@@ -69,6 +69,9 @@ class Polynomial(object):
     def __mul__(self, other):
         return self.mul(other)
 
+    def __div__(self, other):
+        return self.div(other)
+
     def deg(self):
         """
         Returns the degree of the polynomial.
@@ -116,3 +119,27 @@ class Polynomial(object):
             for other_index, other_coefficient in enumerate(other_polynomial.coefficients):
                 new_coefficients[self_index + other_index] += self_coefficient * other_coefficient
         return Polynomial(new_coefficients)
+
+    def div(self, other_polynomial):
+        """
+        Returns the quotient polynomial obtained by dividing the current polynomial by the argument
+        :param other_polynomial:
+        :return:
+        """
+        if other_polynomial.deg() < 0:
+            raise Exception("Dividing by null polynomial")
+
+        remainder = list(self.coefficients)
+        divisor = list(other_polynomial.coefficients)
+        quotient = [0] * (len(remainder) - len(divisor) + 1)
+
+        while len(remainder) >= len(divisor):
+            main_quotient = remainder[len(remainder) - 1] / divisor[len(divisor) - 1]
+            deg = len(remainder) - len(divisor)
+            quotient[deg] = main_quotient
+            for i in range(len(remainder) - len(divisor), len(remainder) - 1):
+                remainder[i] -= main_quotient * divisor[i - deg]
+
+            remainder.pop()
+
+        return Polynomial(quotient)
