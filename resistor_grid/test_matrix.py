@@ -21,16 +21,16 @@ class TestMatrix(unittest.TestCase):
         """
 
         # 0 lines
-        self.assertEqual(Matrix([]).coefficients, ())
+        self.assertEqual((), Matrix([]).coefficients)
         # 1 line and 0 columns
-        self.assertEqual(Matrix([[]]).coefficients, ((),))
+        self.assertEqual(((),), Matrix([[]]).coefficients)
 
         mat = Matrix([[1, 2], [3, 4]])
-        self.assertEqual(mat.coefficients, ((1, 2), (3, 4)))
-        self.assertEqual(mat.get_coefficient(0, 0), 1)
-        self.assertEqual(mat.get_coefficient(0, 1), 2)
-        self.assertEqual(mat.get_coefficient(1, 0), 3)
-        self.assertEqual(mat.get_coefficient(1, 1), 4)
+        self.assertEqual(((1, 2), (3, 4)), mat.coefficients)
+        self.assertEqual(1, mat.get_coefficient(0, 0))
+        self.assertEqual(2, mat.get_coefficient(0, 1))
+        self.assertEqual(3, mat.get_coefficient(1, 0))
+        self.assertEqual(4, mat.get_coefficient(1, 1))
 
     def test_det(self):
         """
@@ -38,8 +38,8 @@ class TestMatrix(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Matrix([[1]]).compute_det(), 1)
-        self.assertEqual(Matrix([[1, 2], [3, 4]]).compute_det(), -2)
+        self.assertEqual(1, Matrix([[1]]).compute_det())
+        self.assertEqual(-2, Matrix([[1, 2], [3, 4]]).compute_det())
 
     def test_fill_diagonal(self):
         """
@@ -48,8 +48,8 @@ class TestMatrix(unittest.TestCase):
         """
 
         filled, permut = Matrix([[0, 1], [1, 0]]).fill_diagonal()
-        self.assertEqual(filled.coefficients, ((1, 0), (0, 1)))
-        self.assertEqual(permut, [1, 0])
+        self.assertEqual(((1, 0), (0, 1)), filled.coefficients)
+        self.assertEqual([1, 0], permut)
 
     def test_sub_matrix(self):
         """

@@ -20,11 +20,11 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Polynomial([]).coefficients, ())
-        self.assertEqual(Polynomial([0]).coefficients, ())
-        self.assertEqual(Polynomial([1]).coefficients, (1,))
-        self.assertEqual(Polynomial([1, 0]).coefficients, (1,))
-        self.assertEqual(Polynomial([0, 1]).coefficients, (0, 1))
+        self.assertEqual((), Polynomial([]).coefficients)
+        self.assertEqual((), Polynomial([0]).coefficients)
+        self.assertEqual((1,), Polynomial([1]).coefficients)
+        self.assertEqual((1,), Polynomial([1, 0]).coefficients)
+        self.assertEqual((0, 1), Polynomial([0, 1]).coefficients)
 
     def test_deg(self):
         """
@@ -32,9 +32,9 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Polynomial([]).deg(), -1)
-        self.assertEqual(Polynomial([1]).deg(), 0)
-        self.assertEqual(Polynomial([0, 1]).deg(), 1)
+        self.assertEqual(-1, Polynomial([]).deg())
+        self.assertEqual(0, Polynomial([1]).deg())
+        self.assertEqual(1, Polynomial([0, 1]).deg())
 
     def test_add(self):
         """
@@ -42,12 +42,12 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Polynomial([]).add(Polynomial([])).coefficients, ())
-        self.assertEqual(Polynomial([]).add(Polynomial([1])).coefficients, (1,))
-        self.assertEqual(Polynomial([1]).add(Polynomial([])).coefficients, (1,))
-        self.assertEqual(Polynomial([1]).add(Polynomial([1])).coefficients, (2,))
-        self.assertEqual(Polynomial([0, 2]).add(Polynomial([1, 3])).coefficients, (1, 5))
-        self.assertEqual(Polynomial([3, 2]).add(Polynomial([2, -2])).coefficients, (5,))
+        self.assertEqual((), Polynomial([]).add(Polynomial([])).coefficients)
+        self.assertEqual((1,), Polynomial([]).add(Polynomial([1])).coefficients)
+        self.assertEqual((1,), Polynomial([1]).add(Polynomial([])).coefficients)
+        self.assertEqual((2,), Polynomial([1]).add(Polynomial([1])).coefficients)
+        self.assertEqual((1, 5), Polynomial([0, 2]).add(Polynomial([1, 3])).coefficients)
+        self.assertEqual((5,), Polynomial([3, 2]).add(Polynomial([2, -2])).coefficients)
 
     def test_neg(self):
         """
@@ -55,10 +55,10 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Polynomial([]).neg().coefficients, ())
-        self.assertEqual(Polynomial([1]).neg().coefficients, (-1,))
-        self.assertEqual(Polynomial([-1]).neg().coefficients, (1,))
-        self.assertEqual(Polynomial([-1, 2]).neg().coefficients, (1, -2))
+        self.assertEqual((), Polynomial([]).neg().coefficients)
+        self.assertEqual((-1,), Polynomial([1]).neg().coefficients)
+        self.assertEqual((1,), Polynomial([-1]).neg().coefficients)
+        self.assertEqual((1, -2), Polynomial([-1, 2]).neg().coefficients)
 
     def test_mul(self):
         """
@@ -66,10 +66,10 @@ class TestPolynomial(unittest.TestCase):
         :return:
         """
 
-        self.assertEqual(Polynomial([]).mul(Polynomial([])).coefficients, ())
-        self.assertEqual(Polynomial([1]).mul(Polynomial([])).coefficients, ())
-        self.assertEqual(Polynomial([2]).mul(Polynomial([3])).coefficients, (6,))
-        self.assertEqual(Polynomial([1, 1]).mul(Polynomial([-1, 1])).coefficients, (-1, 0, 1))
+        self.assertEqual((), Polynomial([]).mul(Polynomial([])).coefficients)
+        self.assertEqual((), Polynomial([1]).mul(Polynomial([])).coefficients)
+        self.assertEqual((6,), Polynomial([2]).mul(Polynomial([3])).coefficients)
+        self.assertEqual((-1, 0, 1), Polynomial([1, 1]).mul(Polynomial([-1, 1])).coefficients)
 
     def test_div(self):
         """
