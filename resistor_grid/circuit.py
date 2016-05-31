@@ -64,7 +64,7 @@ class Circuit(object):
 
         for i in range(self.size):
             for j in range(i):
-                if self.resistors[i][j] == None:
+                if self.resistors[i][j] is None:
                     raise Exception("Missing resistor value between {} and {}".format(j, i))
 
     def get_matrix(self, null_value=0, neutral_value=1):

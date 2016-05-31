@@ -51,6 +51,31 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(filled.coefficients, ((1, 0), (0, 1)))
         self.assertEqual(permut, [1, 0])
 
+    def test_sub_matrix(self):
+        """
+        Test the .sub_matrix method
+        :return:
+        """
+
+        mat = Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ])
+
+        self.assertEqual(
+            ((5, 6), (8, 9)),
+            mat.sub_matrix(0, 0).coefficients
+        )
+        self.assertEqual(
+            ((1, 3), (7, 9)),
+            mat.sub_matrix(1, 1).coefficients
+        )
+        self.assertEqual(
+            ((4, 5), (7, 8)),
+            mat.sub_matrix(0, 2).coefficients
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

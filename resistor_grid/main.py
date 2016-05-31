@@ -9,6 +9,11 @@ from resistor_grid.polynomial import Polynomial
 
 
 def generate_polygon(size):
+    """
+    This creates a polygonal circuit of size `size` where each resistor has R = 1 Ohm
+    :param size:
+    :return:
+    """
     circuit = Circuit(size, Polynomial([0, 1]))
     for i in range(size):
         circuit.set(i, (i + 1) % size, Polynomial([1]))

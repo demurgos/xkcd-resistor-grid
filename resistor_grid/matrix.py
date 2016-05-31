@@ -87,6 +87,25 @@ class Matrix(object):
 
         return mat[size - 1][size - 1]
 
+    def sub_matrix(self, line, column):
+        """
+        Returns the matrix obtained by removing the line `line` and column `column`
+        :param line:
+        :param column:
+        :return:
+        """
+
+        mat = []
+        for i, row in enumerate(self.coefficients):
+            if i != line:
+                new_row = []
+                for j, value in enumerate(row):
+                    if j != column:
+                        new_row.append(value)
+                mat.append(new_row)
+
+        return Matrix(mat)
+
     def fill_diagonal(self):
         """
         This performs permutations to ensure that the diagonal does not contain zeros.
