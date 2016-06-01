@@ -62,7 +62,7 @@ class Matrix(object):
         lines, columns = self.get_size()
         return lines == columns
 
-    def compute_det(self):
+    def compute_det(self, log_progress=False):
         """
         Computes and returns the determinant of the matrix
         (Uses the Bareiss algorithm)
@@ -80,6 +80,8 @@ class Matrix(object):
                     mat[j][k] = (mat[j][k] * mat[i][i]) - (mat[j][i] * mat[i][k])
                     if i > 0:
                         mat[j][k] /= mat[i - 1][i - 1]
+            if log_progress:
+                print i
             if i > 0:
                 for j in range(size):
                     mat[j][i - 1] = 0

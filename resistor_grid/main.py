@@ -35,9 +35,10 @@ def divide_polynomials_at_infinity(pol1, pol2):
 
     val1 = 0 if deg1 < 0 else pol1.coefficients[deg1]
     val2 = 0 if deg2 < 0 else pol2.coefficients[deg2]
+    print val1, u"/", val2
     return float(val1) / float(val2)
 
-N = 3
+N = 4
 
 CIRCUIT = create_knight_grid(N)
 
@@ -48,9 +49,11 @@ CIRCUIT = create_knight_grid(N)
 CIRCUIT_MAT = CIRCUIT.get_matrix(null_value=Polynomial([0]), neutral_value=Polynomial([1]))
 RESISTOR_MAT = CIRCUIT_MAT.sub_matrix(0, CIRCUIT_MAT.get_size()[0] - 1).rot_left()
 
-CIRCUIT_VALUE = CIRCUIT_MAT.compute_det()
-RESISTOR_VALUE = RESISTOR_MAT.compute_det()
+# print CIRCUIT_MAT
 
-print RESISTOR_VALUE, u"/", CIRCUIT_VALUE
+CIRCUIT_VALUE = CIRCUIT_MAT.compute_det(log_progress=True)
+RESISTOR_VALUE = RESISTOR_MAT.compute_det(log_progress=True)
+
+# print RESISTOR_VALUE, u"/", CIRCUIT_VALUE
 
 print divide_polynomials_at_infinity(RESISTOR_VALUE, CIRCUIT_VALUE)

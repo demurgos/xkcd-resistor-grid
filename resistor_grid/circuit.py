@@ -109,28 +109,32 @@ class Circuit(object):
 
         # Kirchhoff's current law
         column = 0
-        for i in range(self.size - 1):
-            for j in range(self.size - 1 - i):
-                if i > 0:
-                    mat[i - 1][column] = -neutral_value
-                mat[i + j][column] = neutral_value
+        for block in range(self.size - 1):
+            for j in range(self.size - 1 - block):
+                if block > 0:
+                    mat[block - 1][column] = -neutral_value
+                mat[block + j][column] = neutral_value
                 column += 1
 
         # Kirchhoff's voltage law
-        i = 1
+        block = 1
         j = 1
         for column in range(self.size - 1, size - 1):
             j += 1
             if j >= self.size:
-                i += 1
-                j = i + 1
-            mat[column][column] = self.get(i, j)
+                block += 1
+                j = block + 1
+            mat[column][column] = self.get(block, j)
             if j == self.size - 1:
-                for k in range(self.size - 2 - i):
-                    mat[column - 1 - k][column] = -self.get(i, j)
-                for k in [x * (x + 1) / 2 for x in range(self.size - 1 - i, self.size - 2)]:
-                    mat[column - 1 - k][column] = self.get(i, j)
-                mat[column][i - 1] = self.get(0, i)
+                # print column
+                for k in range(self.size - 2 - block):
+                    mat[column - 1 - k][column] = -self.get(block, j)
+                to_end = self.size - 2 - block
+                for x in range(to_end + 1, self.size - 2):
+                    k = (x * (x + 1) - to_end * (to_end + 1)) / 2
+                    # print " -> ", block, to_end, k, ":", column - to_end - 1 - k
+                    mat[column - to_end - 1 - k][column] = self.get(block, j)
+                mat[column][block - 1] = self.get(0, block)
                 mat[column][self.size - 2] = -self.get(0, self.size - 1)
 
         # Main resistor
