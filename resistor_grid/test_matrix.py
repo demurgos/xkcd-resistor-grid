@@ -76,6 +76,36 @@ class TestMatrix(unittest.TestCase):
             mat.sub_matrix(0, 2).coefficients
         )
 
+    def test_rot_left(self):
+        """
+        Test the .rot_left method
+        :return:
+        """
+
+        self.assertEqual(
+            ((1,),),
+            Matrix(((1,),)).rot_left().coefficients
+        )
+        self.assertEqual(
+            ((2, 1),),
+            Matrix(((1, 2),)).rot_left().coefficients
+        )
+        self.assertEqual(
+            ((2, 1), (4, 3)),
+            Matrix(((1, 2), (3, 4))).rot_left().coefficients
+        )
+
+        self.assertEqual(
+            ((2, 3, 1),
+             (5, 6, 4),
+             (8, 9, 7)),
+            Matrix((
+                (1, 2, 3),
+                (4, 5, 6),
+                (7, 8, 9)
+            )).rot_left().coefficients
+        )
+
 
 if __name__ == u"__main__":
     unittest.main()

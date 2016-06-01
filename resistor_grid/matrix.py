@@ -134,3 +134,12 @@ class Matrix(object):
                 mat[cur_line][idx], mat[best_line][idx] = mat[best_line][idx], mat[cur_line][idx]
 
         return Matrix(mat), permut
+
+    def rot_left(self):
+        """
+        Rotates all the coefficients to the left.
+        The leftmost column becomes the rightmost column.
+        :return:
+        """
+        width = self.get_size()[1]
+        return Matrix([row[1:width] + tuple([row[0]]) for row in self.coefficients])
