@@ -3,9 +3,8 @@
 """
 This module handles circuits.
 """
-
 from resistor_grid.matrix import Matrix
-
+from resistor_grid.polynomial import Polynomial
 
 class Circuit(object):
     """
@@ -54,6 +53,36 @@ class Circuit(object):
             raise Exception(u"Cannot set resistor for same node")
 
         self.resistors[max(node1, node2)][min(node1, node2)] = value
+
+    def swap_nodes(self, node1, node2):
+        """
+        This method swaps the nodes node1 and node2
+        :param node1:
+        :param node2:
+        :return:
+        """
+        if node1 == node2:
+            return
+
+        cur_node1 = []
+        cur_node2 = []
+        for i in range(self.size):
+            if i != node1:
+                cur_node1.append(self.get(i, node1))
+            if i != node2:
+                cur_node2.append(self.get(i, node2))
+
+        for i, val in enumerate(cur_node2):
+            if i >= node2:
+                i += 1
+            if i != node1:
+                self.set(i, node1, val)
+
+        for i, val in enumerate(cur_node1):
+            if i >= node1:
+                i += 1
+            if i != node2:
+                self.set(i, node2, val)
 
     def ensure_complete(self):
         """
@@ -109,3 +138,39 @@ class Circuit(object):
         mat[size - 1][size - 1] = neutral_value
 
         return Matrix(mat)
+
+
+def create_grid(width, height):
+    """
+    This creates a grid of resistors of size `width`×`height`
+    :param width:
+    :param height:
+    :return:
+    """
+    size = width * height
+    circuit = Circuit(size, default_value=Polynomial([0, 1]))
+    for i in range(width):
+        for j in range(height):
+            if i < width - 1:
+                circuit.set(j * width + i, j * width + i + 1, Polynomial([1]))
+            if j < height - 1:
+                circuit.set(j * width + i, (j + 1) * width + i, Polynomial([1]))
+    return circuit
+
+
+def create_knight_grid(width):
+    """
+    This creates a grid circuit were the main resistor is a knight's move away
+    :param width:
+    :return:
+    """
+    circuit = create_grid(width, width + 1)
+    if width % 2 == 0:
+        center = width * (width + 1) / 2 - 1
+        circuit.swap_nodes(0, center - width)
+        circuit.swap_nodes(1, center + width + 1)
+    else:
+        bellow_center = (width + 1) * (width + 1) / 2 - 1
+        circuit.swap_nodes(0, bellow_center - 1)
+        circuit.swap_nodes(1, bellow_center - width + 1)
+    return circuit
