@@ -34,7 +34,7 @@ class Matrix(object):
             for item in line:
                 formatted_items.append(str(item).ljust(indent, " "))
             formatted_lines.append(u"(" + ", ".join(formatted_items) + u")")
-        return u"(" + ",\n ".join(formatted_lines) + u")"
+        return u"(" + u",\n ".join(formatted_lines) + u")"
 
     def get_coefficient(self, line, column):
         """
