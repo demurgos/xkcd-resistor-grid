@@ -1,0 +1,6 @@
+[package]
+name = "resistor-grid.rs"
+version = "0.1.0"
+authors = ["Charles Samborski <demurgos.net@demurgos.net>"]
+
+[dependencies]

@@ -81,7 +81,7 @@ class Matrix(object):
                     if i > 0:
                         mat[j][k] /= mat[i - 1][i - 1]
             if log_progress:
-                print i
+                print(i)
             if i > 0:
                 for j in range(size):
                     mat[j][i - 1] = 0
