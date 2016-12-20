@@ -79,7 +79,7 @@ class Matrix(object):
                 for k in range(i + 1, size):
                     mat[j][k] = (mat[j][k] * mat[i][i]) - (mat[j][i] * mat[i][k])
                     if i > 0:
-                        mat[j][k] /= mat[i - 1][i - 1]
+                        mat[j][k] //= mat[i - 1][i - 1]
             if log_progress:
                 print(i)
             if i > 0:

@@ -104,7 +104,7 @@ class Circuit(object):
         """
         self.ensure_complete()
 
-        size = 1 + (self.size * (self.size - 1)) / 2
+        size = 1 + (self.size * (self.size - 1)) // 2
         mat = [[null_value] * size for j in range(size)]
 
         # Kirchhoff's current law
@@ -131,7 +131,7 @@ class Circuit(object):
                     mat[column - 1 - k][column] = -self.get(block, j)
                 to_end = self.size - 2 - block
                 for x in range(to_end + 1, self.size - 2):
-                    k = (x * (x + 1) - to_end * (to_end + 1)) / 2
+                    k = (x * (x + 1) - to_end * (to_end + 1)) // 2
                     # print " -> ", block, to_end, k, ":", column - to_end - 1 - k
                     mat[column - to_end - 1 - k][column] = self.get(block, j)
                 mat[column][block - 1] = self.get(0, block)
@@ -170,11 +170,11 @@ def create_knight_grid(width):
     """
     circuit = create_grid(width, width + 1)
     if width % 2 == 0:
-        center = width * (width + 1) / 2 - 1
+        center = width * (width + 1) // 2 - 1
         circuit.swap_nodes(0, center - width)
         circuit.swap_nodes(1, center + width + 1)
     else:
-        bellow_center = (width + 1) * (width + 1) / 2 - 1
+        bellow_center = (width + 1) * (width + 1) // 2 - 1
         circuit.swap_nodes(0, bellow_center - 1)
         circuit.swap_nodes(1, bellow_center - width + 1)
     return circuit

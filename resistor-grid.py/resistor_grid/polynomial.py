@@ -69,7 +69,7 @@ class Polynomial(object):
     def __mul__(self, other):
         return self.mul(other)
 
-    def __div__(self, other):
+    def __floordiv__(self, other):
         return self.div(other)
 
     def deg(self):
@@ -134,7 +134,7 @@ class Polynomial(object):
         quotient = [0] * (len(remainder) - len(divisor) + 1)
 
         while len(remainder) >= len(divisor):
-            main_quotient = remainder[len(remainder) - 1] / divisor[len(divisor) - 1]
+            main_quotient = remainder[len(remainder) - 1] // divisor[len(divisor) - 1]
             deg = len(remainder) - len(divisor)
             quotient[deg] = main_quotient
             for i in range(len(remainder) - len(divisor), len(remainder) - 1):
