@@ -27,6 +27,7 @@ class Polynomial(object):
     with any coefficient.
     The coefficients are immutable
     """
+
     def __init__(self, coefficients):
         self.coefficients = tuple(normalize_coefficients(coefficients))
 

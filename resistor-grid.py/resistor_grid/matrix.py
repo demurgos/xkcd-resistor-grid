@@ -111,6 +111,9 @@ class Matrix(object):
     def fill_diagonal(self):
         """
         This performs permutations to ensure that the diagonal does not contain zeros.
+
+        TODO: this is broken I think
+        (Use pair matching in a bipartite graph)
         :return:
         """
         if not self.is_square():
