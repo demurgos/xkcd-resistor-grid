@@ -3,6 +3,6 @@ use std::ops;
 use std::cmp;
 use std::default;
 
-pub trait Arithmetic: default::Default + fmt::Display + Clone + ops::AddAssign + ops::SubAssign + ops::Mul<Output=Self> + cmp::PartialEq<i32> {}
+pub trait Arithmetic: default::Default + fmt::Display + Clone + ops::AddAssign + ops::Sub<Output=Self> + ops::SubAssign + ops::Mul<Output=Self> + ops::DivAssign + cmp::PartialEq<Self> {}
 
-impl<T: default::Default + fmt::Display + Clone + ops::AddAssign + ops::SubAssign + ops::Mul<Output=T> + cmp::PartialEq<i32>> Arithmetic for T {}
+impl<T: default::Default + fmt::Display + Clone + ops::AddAssign + ops::Sub<Output=T> + ops::SubAssign + ops::Mul<Output=T> + ops::DivAssign + cmp::PartialEq<T>> Arithmetic for T {}

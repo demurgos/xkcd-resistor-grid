@@ -142,7 +142,7 @@ impl<T: Arithmetic> fmt::Display for Polynomial<T> {
       PolynomialDegree::FiniteValue(polynomial_degree) => {
         try! {write!(f, "P[")};
         for (degree, coeff) in self.coefficients.iter().enumerate().rev() {
-          if *coeff == 0i32 {
+          if *coeff == T::default() {
             continue;
           }
 

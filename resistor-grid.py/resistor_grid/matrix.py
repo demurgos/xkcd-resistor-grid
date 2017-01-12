@@ -121,7 +121,7 @@ class Matrix(object):
 
         mat = clone_matrix(self.coefficients)
         size = self.get_size()[0]
-        permut = range(size)
+        permut = list(range(size))
 
         for col in range(size):
             cur_line = col
