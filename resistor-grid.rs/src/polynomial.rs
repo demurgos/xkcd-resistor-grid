@@ -1,11 +1,6 @@
 use std::fmt;
 use std::ops;
-use std::cmp;
-use std::default;
-
-pub trait Arithmetic: default::Default + fmt::Display + Clone + ops::AddAssign + ops::Mul<Output=Self> + cmp::PartialEq<i32> {}
-
-impl<T: default::Default + fmt::Display + Clone + ops::AddAssign + ops::Mul<Output=T> + cmp::PartialEq<i32>> Arithmetic for T {}
+use arithmetic::Arithmetic;
 
 #[derive(Clone)]
 pub struct Polynomial<T: Arithmetic> {
