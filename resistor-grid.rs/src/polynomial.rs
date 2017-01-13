@@ -1,8 +1,9 @@
 use std::fmt;
 use std::ops;
+use std::default;
 use arithmetic::Arithmetic;
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Debug)]
 pub struct Polynomial<T: Arithmetic> {
   coefficients: Vec<T>
 }
@@ -100,11 +101,111 @@ impl<'a, T: Arithmetic> ops::AddAssign<&'a Polynomial<T>> for Polynomial<T> {
   }
 }
 
+impl<T: Arithmetic> ops::Neg for Polynomial<T> {
+  type Output = Polynomial<T>;
+
+  fn neg(self) -> Polynomial<T> {
+    Polynomial::<T> {
+      coefficients: self.coefficients
+        .iter()
+        .map(|x: &T| -> T {-x.clone()})
+        .collect()
+    }
+  }
+}
+
+impl<T: Arithmetic> ops::SubAssign<Polynomial<T>> for Polynomial<T> {
+  fn sub_assign(&mut self, rhs: Polynomial<T>) {
+    self.sub_assign(&rhs)
+  }
+}
+
+impl<'a, T: Arithmetic> ops::SubAssign<&'a Polynomial<T>> for Polynomial<T> {
+  fn sub_assign(&mut self, rhs: &'a Polynomial<T>) {
+    match rhs.degree() {
+      PolynomialDegree::NegativeInfinity => {},
+      PolynomialDegree::FiniteValue(rhs_deg) => {
+        match self.degree() {
+          PolynomialDegree::NegativeInfinity => {
+            self.coefficients = rhs.coefficients
+              .iter()
+              .map(|x: &T| -> T {-x.clone()})
+              .collect();
+          },
+          PolynomialDegree::FiniteValue(self_deg) => {
+            if self_deg > rhs_deg {
+              for (degree, coeff) in rhs.coefficients.iter().enumerate() {
+                self.coefficients[degree] -= coeff.clone()
+              }
+            } else {
+              let mut tmp_coefficients = rhs.coefficients.clone();
+              for (degree, coeff) in self.coefficients.iter().enumerate() {
+                tmp_coefficients[degree] -= coeff.clone()
+              }
+              drop_trailing_zeros(&mut tmp_coefficients);
+              self.coefficients = tmp_coefficients
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+impl<T: Arithmetic> ops::Sub<Polynomial<T>> for Polynomial<T> {
+  type Output = Polynomial<T>;
+
+  fn sub(self, rhs: Polynomial<T>) -> Polynomial<T> {
+    let mut result = self.clone();
+    result -= rhs;
+    result
+  }
+}
+
 impl<T: Arithmetic> ops::Mul<Polynomial<T>> for Polynomial<T> {
   type Output = Polynomial<T>;
 
   fn mul(self, rhs: Polynomial<T>) -> Polynomial<T> {
     &self * &rhs
+  }
+}
+
+impl<T: Arithmetic> default::Default for Polynomial<T> {
+  fn default() -> Polynomial<T> {
+    Polynomial::<T> {coefficients: vec![T::default(); 0usize]}
+  }
+}
+
+impl<T: Arithmetic> ops::DivAssign<Polynomial<T>> for Polynomial<T> {
+  fn div_assign(&mut self, rhs: Polynomial<T>) {
+    match rhs.degree() {
+      PolynomialDegree::NegativeInfinity => {
+        panic!("Division by null polynomial");
+      },
+      PolynomialDegree::FiniteValue(rhs_deg) => {
+        match self.degree() {
+          PolynomialDegree::NegativeInfinity => {},
+          PolynomialDegree::FiniteValue(self_deg) => {
+            let mut remainder = self.coefficients.clone();
+            let divisor = rhs.coefficients.clone();
+            let quotient_deg: usize = rhs_deg - self_deg;
+            let mut quotient = vec![T::default(); quotient_deg + 1];
+
+            while remainder.len() >= divisor.len() {
+              let mut main_quotient = remainder[remainder.len() - 1].clone();
+              main_quotient /= divisor[divisor.len() - 1].clone();
+              let deg = remainder.len() - divisor.len();
+              quotient[deg] = main_quotient.clone();
+              for i in deg..(remainder.len() - 1) {
+                remainder[i] -= main_quotient.clone() * divisor[i - deg].clone();
+              }
+              remainder.pop();
+            }
+            Polynomial{coefficients: quotient};
+          }
+        }
+      }
+    }
   }
 }
 
@@ -216,5 +317,15 @@ mod tests {
 
     poly1 += &poly2;
     assert_eq!(poly1.to_string(), "P[(4)]");
+  }
+
+  #[test]
+  fn test_div_assign() {
+    let mut p1 = Polynomial::<i32> {coefficients: vec![-1, 0, 1]};
+    let p2 = Polynomial::<i32> {coefficients: vec![1, 1]};
+    p1 /= p2.clone();
+
+    assert_eq!(p1.to_string(), "P[(-1)x + (1)]");
+    assert_eq!(p2.to_string(), "P[(1)x + (1)]");
   }
 }
