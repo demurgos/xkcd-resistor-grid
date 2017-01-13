@@ -3,34 +3,18 @@ use arithmetic::Arithmetic;
 use std::fmt;
 use std::ops;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Matrix<T: Arithmetic> {
   rows: usize,
   cols: usize,
   data: Vec<T>
 }
 
-impl<T: Arithmetic> ops::Index<[usize; 2]> for Matrix<T> {
-  type Output = T;
-
-  fn index(&self, index: [usize; 2]) -> &T {
-    assert!(index[0] < self.rows, "Row index is greater than row dimension.");
-    assert!(index[1] < self.cols, "Column index is greater than column dimension.");
-
-    return &self.data[index[0] * self.cols + index[1]];
-  }
-}
-
-impl<T: Arithmetic> ops::IndexMut<[usize; 2]> for Matrix<T> {
-  fn index_mut(&mut self, index: [usize; 2]) -> &mut T {
-    assert!(index[0] < self.rows, "Row index is greater than row dimension.");
-    assert!(index[1] < self.cols, "Column index is greater than column dimension.");
-
-    return &mut self.data[index[0] * self.cols + index[1]];
-  }
-}
-
 impl<T: Arithmetic> Matrix<T> {
+  pub fn new(size: usize) -> Matrix<T> {
+    Matrix::<T> {rows: size, cols: size, data: vec![T::default(); size * size]}
+  }
+
   pub fn is_square(&self) -> bool {
     self.rows == self.cols
   }
@@ -59,6 +43,37 @@ impl<T: Arithmetic> Matrix<T> {
       }
     }
     mat[[size - 1, size - 1]].clone()
+  }
+
+  pub fn rot_left(&mut self) {
+    for row in 0..self.rows {
+      let first = self[[row, 0]].clone();
+      for col in 0..(self.cols - 1) {
+        self[[row, col]] = self[[row, col + 1]].clone();
+      }
+      let last_col = self.cols - 1;
+      self[[row, last_col]] = first;
+    }
+  }
+}
+
+impl<T: Arithmetic> ops::Index<[usize; 2]> for Matrix<T> {
+  type Output = T;
+
+  fn index(&self, index: [usize; 2]) -> &T {
+    assert!(index[0] < self.rows, "Row index is greater than row dimension.");
+    assert!(index[1] < self.cols, "Column index is greater than column dimension.");
+
+    &self.data[index[0] * self.cols + index[1]]
+  }
+}
+
+impl<T: Arithmetic> ops::IndexMut<[usize; 2]> for Matrix<T> {
+  fn index_mut(&mut self, index: [usize; 2]) -> &mut T {
+    assert!(index[0] < self.rows, "Row index is greater than row dimension.");
+    assert!(index[1] < self.cols, "Column index is greater than column dimension.");
+
+    &mut self.data[index[0] * self.cols + index[1]]
   }
 }
 
@@ -168,6 +183,7 @@ pub fn foo <T: Arithmetic> (a: T) {
 #[cfg(test)]
 mod tests {
   use super::Matrix;
+  use polynomial::Polynomial;
 
   #[test]
   fn test_fmt() {
@@ -185,6 +201,14 @@ mod tests {
     assert_eq!(m1[[1, 1]], 4i32);
   }
 
+//  #[test]
+//  fn test_polynomial() {
+//    let p = Polynomial::<i32> {coefficients: vec![]};
+//    let m: Matrix<Polynomial<i32>> = Matrix::new(2);
+//
+//    assert_eq!(m[[0, 0]], p);
+//  }
+
   #[test]
   fn test_add() {
     let m1: Matrix<i32> = Matrix::<i32> {rows: 2, cols: 2, data: vec!(1i32, 2i32, 3i32, 4i32)};
@@ -197,5 +221,13 @@ mod tests {
   fn test_det() {
     let m1: Matrix<f32> = Matrix::<f32> {rows: 2, cols: 2, data: vec!(1., 2., 3., 4.)};
     assert_eq!(m1.det(), -2.);
+  }
+
+  #[test]
+  fn test_rot_left() {
+    let mut m1: Matrix<i32> = Matrix::<i32> {rows: 2, cols: 2, data: vec!(1, 2, 3, 4)};
+    let expected: Matrix<i32> = Matrix::<i32> {rows: 2, cols: 2, data: vec!(2, 1, 4, 3)};
+    m1.rot_left();
+    assert_eq!(m1, expected);
   }
 }
