@@ -108,7 +108,7 @@ impl<T: Arithmetic> ops::Neg for Polynomial<T> {
     Polynomial::<T> {
       coefficients: self.coefficients
         .iter()
-        .map(|x: &T| -> T {-x.clone()})
+        .map(|x: &T| -> T { -x.clone() })
         .collect()
     }
   }
@@ -129,7 +129,7 @@ impl<'a, T: Arithmetic> ops::SubAssign<&'a Polynomial<T>> for Polynomial<T> {
           PolynomialDegree::NegativeInfinity => {
             self.coefficients = rhs.coefficients
               .iter()
-              .map(|x: &T| -> T {-x.clone()})
+              .map(|x: &T| -> T { -x.clone() })
               .collect();
           },
           PolynomialDegree::FiniteValue(self_deg) => {
@@ -172,7 +172,7 @@ impl<T: Arithmetic> ops::Mul<Polynomial<T>> for Polynomial<T> {
 
 impl<T: Arithmetic> default::Default for Polynomial<T> {
   fn default() -> Polynomial<T> {
-    Polynomial::<T> {coefficients: vec![T::default(); 0usize]}
+    Polynomial::<T> { coefficients: vec![T::default(); 0usize] }
   }
 }
 
@@ -219,11 +219,11 @@ impl<'a, 'b, T: Arithmetic> ops::Mul<&'b Polynomial<T>> for &'a Polynomial<T> {
 
   fn mul(self, rhs: &'b Polynomial<T>) -> Polynomial<T> {
     match rhs.degree() {
-      PolynomialDegree::NegativeInfinity => { rhs.clone() },
+      PolynomialDegree::NegativeInfinity => { Polynomial::<T> { coefficients: vec![T::default(); 0] } },
       PolynomialDegree::FiniteValue(rhs_deg) => {
         match self.degree() {
           PolynomialDegree::NegativeInfinity => {
-            self.clone()
+            Polynomial::<T> { coefficients: vec![T::default(); 0] }
           },
           PolynomialDegree::FiniteValue(self_deg) => {
             let mut tmp_coefficients: Vec<T> = vec![Default::default(); rhs_deg + self_deg + 2];
@@ -244,7 +244,7 @@ impl<'a, 'b, T: Arithmetic> ops::Mul<&'b Polynomial<T>> for &'a Polynomial<T> {
 impl<T: Arithmetic> fmt::Display for Polynomial<T> {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match self.degree() {
-      PolynomialDegree::NegativeInfinity => write!(f, "P[(0)]"),
+      PolynomialDegree::NegativeInfinity => write!(f, "P[]"),
       PolynomialDegree::FiniteValue(polynomial_degree) => {
         try! {write!(f, "P[")};
         for (degree, coeff) in self.coefficients.iter().enumerate().rev() {
@@ -299,7 +299,7 @@ mod tests {
   fn test_mul() {
     let poly1 = Polynomial::<i32> { coefficients: vec![1, 10] };
     let poly2 = Polynomial::<i32> { coefficients: vec![2, 20] };
-    let poly3 = Polynomial::<i32> { coefficients: vec![0] };
+    let poly3 = Polynomial::<i32> { coefficients: vec![0; 0] };
 
     let mul1 = &poly1 * &poly2;
     let mul2 = &poly1 * &poly3;
@@ -308,7 +308,7 @@ mod tests {
     assert_eq!(poly2.to_string(), "P[(20)x + (2)]");
     assert_eq!(poly3.to_string(), "P[]");
     assert_eq!(mul1.to_string(), "P[(200)x^2 + (40)x + (2)]");
-    assert_eq!(mul2.to_string(), "P[(0)]");
+    assert_eq!(mul2.to_string(), "P[]");
   }
 
   #[test]
@@ -326,8 +326,8 @@ mod tests {
 
   #[test]
   fn test_div_assign() {
-    let mut p1 = Polynomial::<i32> {coefficients: vec![1, 0, -1]};
-    let p2 = Polynomial::<i32> {coefficients: vec![1, 1]};
+    let mut p1 = Polynomial::<i32> { coefficients: vec![1, 0, -1] };
+    let p2 = Polynomial::<i32> { coefficients: vec![1, 1] };
     assert_eq!(p1.to_string(), "P[(-1)x^2 + (1)]");
     assert_eq!(p2.to_string(), "P[(1)x + (1)]");
     p1 /= p2.clone();
