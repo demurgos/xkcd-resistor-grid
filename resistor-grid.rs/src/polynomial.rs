@@ -186,9 +186,14 @@ impl<T: Arithmetic> ops::DivAssign<Polynomial<T>> for Polynomial<T> {
         match self.degree() {
           PolynomialDegree::NegativeInfinity => {},
           PolynomialDegree::FiniteValue(self_deg) => {
+            if self_deg < rhs_deg {
+              self.coefficients = vec![T::default(); 0];
+              return
+            }
+
             let mut remainder = self.coefficients.clone();
             let divisor = rhs.coefficients.clone();
-            let quotient_deg: usize = rhs_deg - self_deg;
+            let quotient_deg: usize = self_deg - rhs_deg;
             let mut quotient = vec![T::default(); quotient_deg + 1];
 
             while remainder.len() >= divisor.len() {
@@ -201,7 +206,7 @@ impl<T: Arithmetic> ops::DivAssign<Polynomial<T>> for Polynomial<T> {
               }
               remainder.pop();
             }
-            Polynomial{coefficients: quotient};
+            self.coefficients = quotient;
           }
         }
       }
@@ -321,10 +326,11 @@ mod tests {
 
   #[test]
   fn test_div_assign() {
-    let mut p1 = Polynomial::<i32> {coefficients: vec![-1, 0, 1]};
+    let mut p1 = Polynomial::<i32> {coefficients: vec![1, 0, -1]};
     let p2 = Polynomial::<i32> {coefficients: vec![1, 1]};
+    assert_eq!(p1.to_string(), "P[(-1)x^2 + (1)]");
+    assert_eq!(p2.to_string(), "P[(1)x + (1)]");
     p1 /= p2.clone();
-
     assert_eq!(p1.to_string(), "P[(-1)x + (1)]");
     assert_eq!(p2.to_string(), "P[(1)x + (1)]");
   }

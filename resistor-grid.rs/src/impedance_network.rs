@@ -12,7 +12,7 @@ pub struct ImpedanceNetwork<T: Arithmetic> {
 
 impl<T: Arithmetic> ImpedanceNetwork<T> {
   /// Size: number of nodes
-  fn new(size: usize) -> ImpedanceNetwork<T> {
+  pub fn new(size: usize) -> ImpedanceNetwork<T> {
     let number_of_edges = (size * size - 1) / 2;
 
     ImpedanceNetwork::<T> {size: size, data: vec![T::default(); number_of_edges]}
